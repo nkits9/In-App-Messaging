@@ -40,26 +40,20 @@ class AlertViewcontroller: UIViewController {
             if shouldDisplayAlert {
                 guard let alert = value["Alert"] as? [String : Any] else { return }
                 print("🥕", alert, "🥕")
-                guard let imageUrl = alert["image"] as? String else {
-                                        return }
+                
+                guard let imageUrl = alert["image"] as? String else { return }
                 print("🧩", imageUrl, "🧩")
 
-                guard let text = alert["text"] as? String else {
-                                        return
-                    
-                }
+                guard let text = alert["text"] as? String else { return }
                 print("👊🏻", text, "👊🏻")
 
                 self.imageURL = imageUrl
-                print("🍦", self.imageURL, "🍦")
                 self.text = text
-                print("🥜", self.text, "🥜")
                 
             }
             
         })
-        
-        fetchImage(imageURL)
+    
         
     }
     
