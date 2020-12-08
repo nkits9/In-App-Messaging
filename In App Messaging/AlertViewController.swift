@@ -19,7 +19,10 @@ class AlertViewcontroller: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
+        fetchData()
+        displayText.text = text
+        fetchImage(imageURL)
+}
     
     @IBAction func dismissTapped(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
@@ -33,14 +36,36 @@ class AlertViewcontroller: UIViewController {
         ref?.observeSingleEvent(of: .value, with: { (snapshot) in
             guard let value = snapshot.value as? [String : Any] else { return }
             guard let shouldDisplayAlert = value["shouldDisplayAlert"] as? Bool else { return }
-            if 
+            
+            if shouldDisplayAlert {
+                guard let alert = value["Alert"] as? [String : Any] else { return }
+                print("🥕", alert, "🥕")
+                guard let imageUrl = alert["image"] as? String else {
+                                        return }
+                print("🧩", imageUrl, "🧩")
+
+                guard let text = alert["text"] as? String else {
+                                        return
+                    
+                }
+                print("👊🏻", text, "👊🏻")
+
+                self.imageURL = imageUrl
+                print("🍦", self.imageURL, "🍦")
+                self.text = text
+                print("🥜", self.text, "🥜")
+                
+            }
             
         })
+        
+        fetchImage(imageURL)
         
     }
     
     
-    func fetchImage(imageURL: String) {
+    func fetchImage(_ imageURL: String) {
+        print("🥦", imageURL, "🥦")
         guard let url = URL(string: imageURL) else { return }
         let getDataTask = URLSession.shared.dataTask(with: url) { data, _, error in
             guard let data = data, error == nil else { return }
@@ -48,6 +73,7 @@ class AlertViewcontroller: UIViewController {
             DispatchQueue.main.async {
                 let image = UIImage(data: data)
                 self.displayImage.image = image
+                print("☕️")
             }
         }
         getDataTask.resume()
